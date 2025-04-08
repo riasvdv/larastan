@@ -5,6 +5,8 @@ parameters:
     earlyTerminatingFunctionCalls:
         - abort
         - dd
+    excludePaths:
+        - *.blade.php
     mixinExcludeClasses:
         - Eloquent
     bootstrapFiles:
@@ -24,6 +26,7 @@ parameters:
     checkModelProperties: false
     checkUnusedViews: false
     checkModelAppends: true
+    generalizeEnvReturnType: false
 
 parametersSchema:
     checkOctaneCompatibility: bool()
@@ -568,7 +571,21 @@ services:
         class: Larastan\Larastan\Support\HigherOrderCollectionProxyHelper
 
     -
+        class: Larastan\Larastan\ReturnTypes\ConfigFunctionDynamicFunctionReturnTypeExtension
+        arguments:
+            parser: @currentPhpVersionSimpleDirectParser
+            configPaths: %configPaths%
+        tags:
+            - phpstan.broker.dynamicFunctionReturnTypeExtension
+
+    -
         class: Larastan\Larastan\ReturnTypes\Helpers\EnvFunctionDynamicFunctionReturnTypeExtension
+
+    -
+        class: Larastan\Larastan\ReturnTypes\FormRequestSafeDynamicMethodReturnTypeExtension
+        tags:
+            - phpstan.broker.dynamicMethodReturnTypeExtension
+
 rules:
     - Larastan\Larastan\Rules\UselessConstructs\NoUselessWithFunctionCallsRule
     - Larastan\Larastan\Rules\UselessConstructs\NoUselessValueFunctionCallsRule
