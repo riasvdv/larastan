@@ -41,6 +41,7 @@ parametersSchema:
     checkModelProperties: bool()
     checkUnusedViews: bool()
     checkModelAppends: bool()
+    generalizeEnvReturnType: bool()
 
 conditionalTags:
     Larastan\Larastan\Rules\NoEnvCallsOutsideOfConfigRule:
@@ -55,6 +56,8 @@ conditionalTags:
         phpstan.rules.rule: %checkUnusedViews%
     Larastan\Larastan\Rules\ModelAppendsRule:
         phpstan.rules.rule: %checkModelAppends%
+    Larastan\Larastan\ReturnTypes\Helpers\EnvFunctionDynamicFunctionReturnTypeExtension:
+        phpstan.broker.dynamicFunctionReturnTypeExtension: %generalizeEnvReturnType%
 
 services:
     -
@@ -564,6 +567,8 @@ services:
     -
         class: Larastan\Larastan\Support\HigherOrderCollectionProxyHelper
 
+    -
+        class: Larastan\Larastan\ReturnTypes\Helpers\EnvFunctionDynamicFunctionReturnTypeExtension
 rules:
     - Larastan\Larastan\Rules\UselessConstructs\NoUselessWithFunctionCallsRule
     - Larastan\Larastan\Rules\UselessConstructs\NoUselessValueFunctionCallsRule
