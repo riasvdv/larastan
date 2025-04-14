@@ -1,7 +1,7 @@
 {
     "name": "larastan/larastan",
     "type": "phpstan-extension",
-    "description": "Larastan - Discover bugs in your code without running it. A phpstan/phpstan wrapper for Laravel",
+    "description": "Larastan - Discover bugs in your code without running it. A phpstan/phpstan extension for Laravel",
     "keywords": ["laravel", "larastan", "phpstan", "php", "package", "static analysis", "code analysis", "code analyse"],
     "license": "MIT",
     "authors": [
@@ -28,7 +28,7 @@
         "phpstan/phpstan": "^2.1.11"
     },
     "require-dev": {
-        "doctrine/coding-standard": "^12.0",
+        "doctrine/coding-standard": "^13",
         "nikic/php-parser": "^5.4",
         "laravel/framework": "^11.44.2 || ^12.7.2",
         "mockery/mockery": "^1.6.12",
