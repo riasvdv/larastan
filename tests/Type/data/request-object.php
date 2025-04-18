@@ -18,5 +18,5 @@ function test(Request $request): void
     assertType('(object|string)', $request->route('foo', 'bar'));
     assertType('array<string, string>', $request->server());
     assertType('string|null', $request->server('foo'));
-    assertType('int|string', $request->server('foo', 5));
+    assertType('5|string', $request->server('foo', 5));
 }

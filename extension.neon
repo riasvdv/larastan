@@ -584,7 +584,7 @@ services:
         class: Larastan\Larastan\Support\ConfigParser
         arguments:
             parser: @currentPhpVersionSimpleDirectParser
-            configPaths: %configPaths%
+            configPaths: %configDirectories%
 
     -
         class: Larastan\Larastan\ReturnTypes\Helpers\EnvFunctionDynamicFunctionReturnTypeExtension

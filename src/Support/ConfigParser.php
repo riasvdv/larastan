@@ -101,10 +101,6 @@ final class ConfigParser
 
             foreach ($configKeyParts as $configKeyPart) {
                 foreach ($items as $item) {
-                    if ($item === null) {
-                        continue;
-                    }
-
                     if (! $item->key instanceof Node\Scalar) {
                         continue 3;
                     }
