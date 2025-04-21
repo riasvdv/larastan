@@ -27,6 +27,7 @@ parameters:
     checkUnusedViews: false
     checkModelAppends: true
     generalizeEnvReturnType: false
+    checkConfigTypes: false
 
 parametersSchema:
     checkOctaneCompatibility: bool()
@@ -45,6 +46,7 @@ parametersSchema:
     checkUnusedViews: bool()
     checkModelAppends: bool()
     generalizeEnvReturnType: bool()
+    checkConfigTypes: bool()
 
 conditionalTags:
     Larastan\Larastan\Rules\NoEnvCallsOutsideOfConfigRule:
@@ -61,6 +63,10 @@ conditionalTags:
         phpstan.rules.rule: %checkModelAppends%
     Larastan\Larastan\ReturnTypes\Helpers\EnvFunctionDynamicFunctionReturnTypeExtension:
         phpstan.broker.dynamicFunctionReturnTypeExtension: %generalizeEnvReturnType%
+    Larastan\Larastan\ReturnTypes\Helpers\ConfigFunctionDynamicFunctionReturnTypeExtension:
+        phpstan.broker.dynamicFunctionReturnTypeExtension: %checkConfigTypes%
+    Larastan\Larastan\ReturnTypes\ConfigGetDynamicMethodReturnTypeExtension:
+        phpstan.broker.dynamicMethodReturnTypeExtension: %checkConfigTypes%
 
 services:
     -
@@ -572,13 +578,9 @@ services:
 
     -
         class: Larastan\Larastan\ReturnTypes\Helpers\ConfigFunctionDynamicFunctionReturnTypeExtension
-        tags:
-            - phpstan.broker.dynamicFunctionReturnTypeExtension
 
     -
         class: Larastan\Larastan\ReturnTypes\ConfigGetDynamicMethodReturnTypeExtension
-        tags:
-            - phpstan.broker.dynamicMethodReturnTypeExtension
 
     -
         class: Larastan\Larastan\Support\ConfigParser
