@@ -27,6 +27,7 @@ parameters:
     checkModelAppends: true
     generalizeEnvReturnType: false
     checkConfigTypes: false
+    checkAuthCallsWhenInRequestScope: false
 
 parametersSchema:
     checkOctaneCompatibility: bool()
@@ -47,6 +48,7 @@ parametersSchema:
     checkModelAppends: bool()
     generalizeEnvReturnType: bool()
     checkConfigTypes: bool()
+    checkAuthCallsWhenInRequestScope: bool()
 
 conditionalTags:
     Larastan\Larastan\Rules\NoEnvCallsOutsideOfConfigRule:
@@ -63,6 +65,10 @@ conditionalTags:
         phpstan.rules.rule: %checkUnusedViews%
     Larastan\Larastan\Rules\ModelAppendsRule:
         phpstan.rules.rule: %checkModelAppends%
+    Larastan\Larastan\Rules\NoAuthFacadeInRequestScopeRule:
+        phpstan.rules.rule: %checkAuthCallsWhenInRequestScope%
+    Larastan\Larastan\Rules\NoAuthHelperInRequestScopeRule:
+        phpstan.rules.rule: %checkAuthCallsWhenInRequestScope%
     Larastan\Larastan\ReturnTypes\Helpers\EnvFunctionDynamicFunctionReturnTypeExtension:
         phpstan.broker.dynamicFunctionReturnTypeExtension: %generalizeEnvReturnType%
     Larastan\Larastan\ReturnTypes\Helpers\ConfigFunctionDynamicFunctionReturnTypeExtension:
@@ -608,6 +614,12 @@ services:
         class: Larastan\Larastan\ReturnTypes\FormRequestSafeDynamicMethodReturnTypeExtension
         tags:
             - phpstan.broker.dynamicMethodReturnTypeExtension
+
+    -
+        class: Larastan\Larastan\Rules\NoAuthFacadeInRequestScopeRule
+
+    -
+        class: Larastan\Larastan\Rules\NoAuthHelperInRequestScopeRule
 
 rules:
     - Larastan\Larastan\Rules\UselessConstructs\NoUselessWithFunctionCallsRule
