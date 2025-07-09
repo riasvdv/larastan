@@ -3,6 +3,7 @@
 namespace Facades;
 
 use App\DummyFacade;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Log;

@@ -6,6 +6,8 @@ namespace Type;
 
 use PHPStan\Testing\TypeInferenceTestCase;
 
+use function Orchestra\Testbench\laravel_version_compare;
+
 class ConfigDynamicReturnTypeExtensionTest extends TypeInferenceTestCase
 {
     /** @return iterable<mixed> */
@@ -13,6 +15,13 @@ class ConfigDynamicReturnTypeExtensionTest extends TypeInferenceTestCase
     {
         yield from self::gatherAssertTypes(__DIR__ . '/data/config-helper-function.php');
         yield from self::gatherAssertTypes(__DIR__ . '/data/config-repository-method.php');
+
+        if (! laravel_version_compare('12.20.0', '>=')) {
+            return;
+        }
+
+        yield from self::gatherAssertTypes(__DIR__ . '/data/config-facade-collection-method.php');
+        yield from self::gatherAssertTypes(__DIR__ . '/data/config-repository-method-l12-20.php');
     }
 
     /** @dataProvider dataFileAsserts */

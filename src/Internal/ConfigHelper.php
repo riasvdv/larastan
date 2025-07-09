@@ -2,52 +2,36 @@
 
 declare(strict_types=1);
 
-namespace Larastan\Larastan\ReturnTypes;
+namespace Larastan\Larastan\Internal;
 
-use Illuminate\Config\Repository;
 use Larastan\Larastan\Support\ConfigParser;
-use PhpParser\Node\Expr\MethodCall;
+use PhpParser\Node\Arg;
 use PHPStan\Analyser\Scope;
-use PHPStan\Reflection\MethodReflection;
-use PHPStan\Type\DynamicMethodReturnTypeExtension;
 use PHPStan\Type\GeneralizePrecision;
 use PHPStan\Type\Type;
-use PHPStan\Type\TypeCombinator;
 use PHPStan\Type\TypeTraverser;
 
 use function count;
 
-class ConfigGetDynamicMethodReturnTypeExtension implements DynamicMethodReturnTypeExtension
+/** @internal */
+final class ConfigHelper
 {
     public function __construct(private ConfigParser $configParser)
     {
     }
 
-    public function getClass(): string
+    public function hasConfigPaths(): bool
     {
-        return Repository::class;
+        return $this->configParser->getConfigPaths() !== [];
     }
 
-    public function isMethodSupported(MethodReflection $methodReflection): bool
+    /**
+     * @param  Arg[] $args
+     *
+     * @return Type[]
+     */
+    public function getReturnTypes(array $args, Scope $scope): array
     {
-        if ($this->configParser->getConfigPaths() === []) {
-            return false;
-        }
-
-        return $methodReflection->getName() === 'get';
-    }
-
-    public function getTypeFromMethodCall(
-        MethodReflection $methodReflection,
-        MethodCall $methodCall,
-        Scope $scope,
-    ): Type|null {
-        $args = $methodCall->getArgs();
-
-        if (count($args) === 0) {
-            return null;
-        }
-
         $firstArgType = $scope->getType($args[0]->value);
 
         $defaultArgType = null;
@@ -69,8 +53,6 @@ class ConfigGetDynamicMethodReturnTypeExtension implements DynamicMethodReturnTy
             })->generalize(GeneralizePrecision::lessSpecific());
         }
 
-        $returnTypes += $this->configParser->getTypes($constantStrings, $scope);
-
-        return $returnTypes === [] ? null : TypeCombinator::union(...$returnTypes);
+        return $returnTypes + $this->configParser->getTypes($constantStrings, $scope);
     }
 }

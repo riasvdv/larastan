@@ -67,8 +67,10 @@ conditionalTags:
         phpstan.broker.dynamicFunctionReturnTypeExtension: %generalizeEnvReturnType%
     Larastan\Larastan\ReturnTypes\Helpers\ConfigFunctionDynamicFunctionReturnTypeExtension:
         phpstan.broker.dynamicFunctionReturnTypeExtension: %checkConfigTypes%
-    Larastan\Larastan\ReturnTypes\ConfigGetDynamicMethodReturnTypeExtension:
+    Larastan\Larastan\ReturnTypes\ConfigRepositoryDynamicMethodReturnTypeExtension:
         phpstan.broker.dynamicMethodReturnTypeExtension: %checkConfigTypes%
+    Larastan\Larastan\ReturnTypes\ConfigFacadeCollectionDynamicStaticMethodReturnTypeExtension:
+        phpstan.broker.dynamicStaticMethodReturnTypeExtension: %checkConfigTypes%
 
 services:
     -
@@ -585,13 +587,19 @@ services:
         class: Larastan\Larastan\ReturnTypes\Helpers\ConfigFunctionDynamicFunctionReturnTypeExtension
 
     -
-        class: Larastan\Larastan\ReturnTypes\ConfigGetDynamicMethodReturnTypeExtension
+        class: Larastan\Larastan\ReturnTypes\ConfigRepositoryDynamicMethodReturnTypeExtension
+
+    -
+        class: Larastan\Larastan\ReturnTypes\ConfigFacadeCollectionDynamicStaticMethodReturnTypeExtension
 
     -
         class: Larastan\Larastan\Support\ConfigParser
         arguments:
             parser: @currentPhpVersionSimpleDirectParser
             configPaths: %configDirectories%
+
+    -
+        class: Larastan\Larastan\Internal\ConfigHelper
 
     -
         class: Larastan\Larastan\ReturnTypes\Helpers\EnvFunctionDynamicFunctionReturnTypeExtension
