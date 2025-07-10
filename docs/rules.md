@@ -1,6 +1,6 @@
 # Rules
 
-All rules that are specific to Laravel applications 
+All rules that are specific to Laravel applications
 are listed here with their configurable options.
 
 ## NoModelMake
@@ -33,10 +33,10 @@ parameters:
 
 ## NoUnnecessaryCollectionCall
 
-Checks for method calls on instances of `Illuminate\Support\Collection` and their 
-subclasses. If the same result could have been determined 
+Checks for method calls on instances of `Illuminate\Support\Collection` and their
+subclasses. If the same result could have been determined
 directly with a query then this rule will produce an error.
-This rule exists to reduce unnecessarily heavy queries on the database 
+This rule exists to reduce unnecessarily heavy queries on the database
 and to prevent unneeded loops over Collections.
 
 ### Examples
@@ -328,7 +328,7 @@ use Illuminate\Support\ServiceProvider;
 class CorrectDeferrableProvider extends ServiceProvider implements DeferrableProvider
 {
     public function register() {}
-    
+
     public function provides(): array
     {
         return [
@@ -520,5 +520,42 @@ This rule is disabled by default.  To enable, add the following to your `phpstan
 ```neon
 parameters:
     checkAuthCallsWhenInRequestScope: true
+```
+
+## ConfigCollectionRule
+
+This rule checks for incorrect keys passed into the `Config::collection` method. It helps to prevent runtime errors when a configuration key that is not an array is used.
+
+### Examples
+
+Given a configuration file `config/foo.php` with the following content:
+```php
+return [
+    'foo' => 'bar',
+    'bar' => [1, 2, 3],
+];
+```
+
+The following code would produce an error:
+```php
+$collection = Config::collection('foo.foo');
+```
+
+```
+Config key 'foo.foo' is not an array.
+```
+
+To fix this, you should use a config key that returns an array:
+```php
+$collection = Config::collection('foo.bar');
+```
+
+### Configuration
+
+This rule is disabled by default. To enable, add the following to your `phpstan.neon` file:
+
+```neon
+parameters:
+    checkConfigTypes: true
 ```
 
