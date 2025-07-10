@@ -77,6 +77,8 @@ conditionalTags:
         phpstan.broker.dynamicMethodReturnTypeExtension: %checkConfigTypes%
     Larastan\Larastan\ReturnTypes\ConfigFacadeCollectionDynamicStaticMethodReturnTypeExtension:
         phpstan.broker.dynamicStaticMethodReturnTypeExtension: %checkConfigTypes%
+    Larastan\Larastan\Rules\ConfigCollectionRule:
+        phpstan.rules.rule: %checkConfigTypes%
 
 services:
     -
@@ -620,6 +622,9 @@ services:
 
     -
         class: Larastan\Larastan\Rules\NoAuthHelperInRequestScopeRule
+
+    -
+        class: Larastan\Larastan\Rules\ConfigCollectionRule
 
 rules:
     - Larastan\Larastan\Rules\UselessConstructs\NoUselessWithFunctionCallsRule
