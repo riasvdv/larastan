@@ -27,6 +27,12 @@ class CollectionDynamicReturnTypeExtensionsTest extends TypeInferenceTestCase
         }
 
         yield from self::gatherAssertTypes(__DIR__ . '/data/collection-generic-static-methods-l12.php');
+
+        if (! laravel_version_compare('12.20.0', '>=')) {
+            return;
+        }
+
+        yield from self::gatherAssertTypes(__DIR__ . '/data/collection-stubs-l12-20.php');
     }
 
     /** @dataProvider dataFileAsserts */
