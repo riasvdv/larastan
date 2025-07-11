@@ -8,13 +8,15 @@ use Larastan\Larastan\Properties\Schema\MySqlDataTypeToPhpTypeConverter;
 use Larastan\Larastan\Properties\SquashedMigrationHelper;
 use PHPStan\File\FileHelper;
 use PHPStan\Testing\PHPStanTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 
 use function array_keys;
 
-/** @covers \Larastan\Larastan\Properties\SquashedMigrationHelper */
+#[CoversClass(SquashedMigrationHelper::class)]
 class SquashedMigrationHelperTest extends PHPStanTestCase
 {
-    /** @test */
+    #[Test]
     public function it_can_parse_schema_dump_for_a_basic_schema(): void
     {
         $schemaParser = new SquashedMigrationHelper(
@@ -38,7 +40,7 @@ class SquashedMigrationHelperTest extends PHPStanTestCase
         $this->assertSame('string', $tables['accounts']->columns['updated_at']->readableType);
     }
 
-    /** @test */
+    #[Test]
     public function it_will_ignore_if_table_already_exists_in_parsed_tables_array(): void
     {
         $schemaParser = new SquashedMigrationHelper(
@@ -62,7 +64,7 @@ class SquashedMigrationHelperTest extends PHPStanTestCase
         $this->assertSame('string', $tables['accounts']->columns['updated_at']->readableType);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_find_schemas_with_sql_suffix(): void
     {
         $schemaParser = new SquashedMigrationHelper(
@@ -86,7 +88,7 @@ class SquashedMigrationHelperTest extends PHPStanTestCase
         $this->assertSame('string', $tables['accounts']->columns['updated_at']->readableType);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_find_schemas_with_different_extensions(): void
     {
         $schemaParser = new SquashedMigrationHelper(
@@ -119,7 +121,7 @@ class SquashedMigrationHelperTest extends PHPStanTestCase
         $this->assertSame('string', $tables['users']->columns['updated_at']->readableType);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_disable_schema_scanning(): void
     {
         $schemaParser = new SquashedMigrationHelper(

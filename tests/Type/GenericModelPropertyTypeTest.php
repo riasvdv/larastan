@@ -17,6 +17,7 @@ use PHPStan\Type\Type;
 use PHPStan\Type\TypeCombinator;
 use PHPStan\Type\UnionType;
 use PHPStan\Type\VerbosityLevel;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 use function array_map;
 use function array_reverse;
@@ -25,11 +26,8 @@ use function sprintf;
 
 class GenericModelPropertyTypeTest extends PHPStanTestCase
 {
-    /**
-     * @param class-string<Type> $expectedTypeClass
-     *
-     * @dataProvider dataUnion
-     */
+    /** @param class-string<Type> $expectedTypeClass */
+    #[DataProvider('dataUnion')]
     public function testUnion(
         callable $types,
         string $expectedTypeClass,
@@ -52,11 +50,8 @@ class GenericModelPropertyTypeTest extends PHPStanTestCase
         $this->assertInstanceOf($expectedTypeClass, $actualType);
     }
 
-    /**
-     * @param class-string<Type> $expectedTypeClass
-     *
-     * @dataProvider dataUnion
-     */
+    /** @param class-string<Type> $expectedTypeClass */
+    #[DataProvider('dataUnion')]
     public function testUnionInversed(
         callable $types,
         string $expectedTypeClass,
@@ -108,11 +103,8 @@ class GenericModelPropertyTypeTest extends PHPStanTestCase
         ];
     }
 
-    /**
-     * @param class-string<Type> $expectedTypeClass
-     *
-     * @dataProvider dataIntersect
-     */
+    /** @param class-string<Type> $expectedTypeClass */
+    #[DataProvider('dataIntersect')]
     public function testIntersect(
         callable $types,
         string $expectedTypeClass,
@@ -127,11 +119,8 @@ class GenericModelPropertyTypeTest extends PHPStanTestCase
         $this->assertInstanceOf($expectedTypeClass, $actualType);
     }
 
-    /**
-     * @param class-string<Type> $expectedTypeClass
-     *
-     * @dataProvider dataIntersect
-     */
+    /** @param class-string<Type> $expectedTypeClass */
+    #[DataProvider('dataIntersect')]
     public function testIntersectInversed(
         callable $types,
         string $expectedTypeClass,

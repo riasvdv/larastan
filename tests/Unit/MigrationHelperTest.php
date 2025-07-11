@@ -9,6 +9,7 @@ use Larastan\Larastan\Properties\SchemaTable;
 use PHPStan\File\FileHelper;
 use PHPStan\Parser\Parser;
 use PHPStan\Testing\PHPStanTestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 use function array_keys;
 
@@ -25,7 +26,7 @@ class MigrationHelperTest extends PHPStanTestCase
         $this->reflectionProvider = $this->createReflectionProvider();
     }
 
-    /** @test */
+    #[Test]
     public function it_will_return_empty_array_if_migrations_path_is_not_a_directory(): void
     {
         $migrationHelper = new MigrationHelper($this->parser, ['foobar'], $this->fileHelper, false, $this->reflectionProvider);
@@ -33,7 +34,7 @@ class MigrationHelperTest extends PHPStanTestCase
         self::assertSame([], $migrationHelper->initializeTables());
     }
 
-    /** @test */
+    #[Test]
     public function it_can_read_basic_migrations_and_create_table_structure(): void
     {
         $migrationHelper = new MigrationHelper($this->parser, [__DIR__ . '/data/basic_migration'], $this->fileHelper, false, $this->reflectionProvider);
@@ -43,7 +44,7 @@ class MigrationHelperTest extends PHPStanTestCase
         $this->assertUsersTableSchema($tables);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_read_schema_definitions_from_any_method_in_class(): void
     {
         $migrationHelper = new MigrationHelper($this->parser, [__DIR__ . '/data/migrations_with_different_methods'], $this->fileHelper, false, $this->reflectionProvider);
@@ -53,7 +54,7 @@ class MigrationHelperTest extends PHPStanTestCase
         $this->assertUsersTableSchema($tables);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_read_schema_definitions_with_multiple_create_and_drop_methods_for_one_table(): void
     {
         $migrationHelper = new MigrationHelper($this->parser, [__DIR__ . '/data/complex_migrations'], $this->fileHelper, false, $this->reflectionProvider);
@@ -76,7 +77,7 @@ class MigrationHelperTest extends PHPStanTestCase
         self::assertSame('int', $tables['users']->columns['active']->readableType);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_read_additional_directories(): void
     {
         $migrationHelper = new MigrationHelper($this->parser, [
@@ -91,7 +92,7 @@ class MigrationHelperTest extends PHPStanTestCase
         self::assertArrayHasKey('teams', $tables);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_handle_use_of_after_method_in_migration(): void
     {
         $migrationHelper = new MigrationHelper($this->parser, [
@@ -111,7 +112,7 @@ class MigrationHelperTest extends PHPStanTestCase
         self::assertSame('string', $tables['users']->columns['updated_at']->readableType);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_handle_alter_table_and_column_rename(): void
     {
         $migrationHelper = new MigrationHelper($this->parser, [
@@ -129,7 +130,7 @@ class MigrationHelperTest extends PHPStanTestCase
         self::assertSame('string', $columns['full_name']->readableType);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_handle_migrations_with_soft_deletes(): void
     {
         $migrationHelper = new MigrationHelper($this->parser, [__DIR__ . '/data/migrations_using_soft_deletes'], $this->fileHelper, false, $this->reflectionProvider);
@@ -142,7 +143,7 @@ class MigrationHelperTest extends PHPStanTestCase
         self::assertSame('string', $tables['users']->columns['deleted_at']->readableType);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_handle_migrations_with_soft_deletes_tz(): void
     {
         $migrationHelper = new MigrationHelper($this->parser, [__DIR__ . '/data/migrations_using_soft_deletes_tz'], $this->fileHelper, false, $this->reflectionProvider);
@@ -155,7 +156,7 @@ class MigrationHelperTest extends PHPStanTestCase
         self::assertSame('string', $tables['users']->columns['deleted_at']->readableType);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_handle_migrations_with_default_arguments(): void
     {
         $migrationHelper = new MigrationHelper($this->parser, [__DIR__ . '/data/migration_with_default_arguments'], $this->fileHelper, false, $this->reflectionProvider);
@@ -178,7 +179,7 @@ class MigrationHelperTest extends PHPStanTestCase
         self::assertSame('string', $tables['users']->columns['custom_soft_deletes']->readableType);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_handle_connection_before_schema_create(): void
     {
         $migrationHelper = new MigrationHelper($this->parser, [__DIR__ . '/data/migration_with_schema_connection'], $this->fileHelper, false, $this->reflectionProvider);
@@ -188,7 +189,7 @@ class MigrationHelperTest extends PHPStanTestCase
         $this->assertUsersTableSchema($tables);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_disable_migration_scanning(): void
     {
         $migrationHelper = new MigrationHelper($this->parser, [
@@ -201,7 +202,7 @@ class MigrationHelperTest extends PHPStanTestCase
         self::assertSame([], $tables);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_handle_nullable_in_migrations(): void
     {
         $migrationHelper = new MigrationHelper($this->parser, [__DIR__ . '/data/migrations_using_nullable'], $this->fileHelper, false, $this->reflectionProvider);
@@ -227,7 +228,7 @@ class MigrationHelperTest extends PHPStanTestCase
         self::assertSame('string', $tables['users']->columns['updated_at']->readableType);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_handle_migrations_with_array_passed_to_drop_column(): void
     {
         $migrationHelper = new MigrationHelper($this->parser, [
@@ -242,7 +243,7 @@ class MigrationHelperTest extends PHPStanTestCase
         self::assertSame(['id', 'name', 'email', 'created_at', 'updated_at'], array_keys($tables['users']->columns));
     }
 
-    /** @test */
+    #[Test]
     public function it_can_handle_migrations_with_if_statements(): void
     {
         $migrationHelper = new MigrationHelper($this->parser, [__DIR__ . '/data/conditional_migrations'], $this->fileHelper, false, $this->reflectionProvider);

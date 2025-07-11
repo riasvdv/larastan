@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Type;
 
 use PHPStan\Testing\TypeInferenceTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 use function Orchestra\Testbench\laravel_version_compare;
 
@@ -35,7 +36,7 @@ class CollectionDynamicReturnTypeExtensionsTest extends TypeInferenceTestCase
         yield from self::gatherAssertTypes(__DIR__ . '/data/collection-stubs-l12-20.php');
     }
 
-    /** @dataProvider dataFileAsserts */
+    #[DataProvider('dataFileAsserts')]
     public function testFileAsserts(
         string $assertType,
         string $file,
